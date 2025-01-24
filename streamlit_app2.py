@@ -6,7 +6,7 @@ import altair as alt
 # Configuration de la page
 st.set_page_config(
     page_title="Classification des Iris", 
-    page_icon="🌸",
+    page_icon="R",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -88,9 +88,9 @@ if st.session_state.page_selection == 'about':
         - Python (Streamlit, Altair, Pandas)
         - Machine Learning (Scikit-learn)
         
-        *Auteur : Stéphane C. K. Tékouabou*
+        *Auteur : MEUKIEJE Roni Alain*
         
-        ✉ Contact : ctekouaboukoumetio@gmail.com
+        ✉ Contact : meukiejeroni05@icloud.com
     """)
 
 elif st.session_state.page_selection == 'dataset':
