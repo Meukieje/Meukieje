@@ -1,143 +1,159 @@
+# Importer les bibliothèques nécessaires
 import streamlit as st
 import pandas as pd
 import altair as alt
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
-# Page configuration
+# Configuration de la page
 st.set_page_config(
-    page_title="Iris Classification", 
-    page_icon="assets/icon/icon.png",
+    page_title="Classification des Iris", 
+    page_icon="🌸",
     layout="wide",
-    initial_sidebar_state="expanded")
+    initial_sidebar_state="expanded"
+)
 
 alt.themes.enable("dark")
 
 # -------------------------
-# Sidebar
+# Barre latérale
 
-# Initialize page_selection in session state if not already set
+# Initialiser page_selection dans l'état de session si pas déjà défini
 if 'page_selection' not in st.session_state:
-    st.session_state.page_selection = 'about'  # Default page
+    st.session_state.page_selection = 'about'  # Page par défaut
 
-# Function to update page_selection
+# Fonction pour mettre à jour page_selection
 def set_page_selection(page):
     st.session_state.page_selection = page
 
 with st.sidebar:
-
-    st.title('Iris Classification')
-
-    # Page Button Navigation
-    st.subheader("Pages")
-
-    if st.button("About", use_container_width=True, on_click=set_page_selection, args=('about',)):
+    st.title('🌼 Classification des Iris')
+    
+    # Navigation par boutons avec des icônes
+    st.subheader("📂 Navigation")
+    
+    if st.button("🏷 À Propos", use_container_width=True, on_click=set_page_selection, args=('about',)):
         st.session_state.page_selection = 'about'
     
-    if st.button("Dataset", use_container_width=True, on_click=set_page_selection, args=('dataset',)):
+    if st.button("📊 Jeu de Données", use_container_width=True, on_click=set_page_selection, args=('dataset',)):
         st.session_state.page_selection = 'dataset'
 
-    if st.button("EDA", use_container_width=True, on_click=set_page_selection, args=('eda',)):
+    if st.button("🔍 Analyse Exploratoire", use_container_width=True, on_click=set_page_selection, args=('eda',)):
         st.session_state.page_selection = "eda"
 
-    if st.button("Data Cleaning / Pre-processing", use_container_width=True, on_click=set_page_selection, args=('data_cleaning',)):
+    if st.button("🧹 Nettoyage / Prétraitement", use_container_width=True, on_click=set_page_selection, args=('data_cleaning',)):
         st.session_state.page_selection = "data_cleaning"
 
-    if st.button("Machine Learning", use_container_width=True, on_click=set_page_selection, args=('machine_learning',)): 
+    if st.button("🤖 Apprentissage Automatique", use_container_width=True, on_click=set_page_selection, args=('machine_learning',)): 
         st.session_state.page_selection = "machine_learning"
 
-    if st.button("Prediction", use_container_width=True, on_click=set_page_selection, args=('prediction',)): 
+    if st.button("🔮 Prédiction", use_container_width=True, on_click=set_page_selection, args=('prediction',)): 
         st.session_state.page_selection = "prediction"
 
-    if st.button("Conclusion", use_container_width=True, on_click=set_page_selection, args=('conclusion',)):
+    if st.button("📜 Conclusion", use_container_width=True, on_click=set_page_selection, args=('conclusion',)):
         st.session_state.page_selection = "conclusion"
 
-    # Project Details
-    st.subheader("Abstract")
-    st.markdown("A Streamlit dashboard highlighting the results of a training two classification models using the Iris flower dataset from Kaggle.")
-    st.markdown("📊 [Dataset](https://www.kaggle.com/datasets/arshid/iris-flower-dataset)")
-    st.markdown("📗 [Google Colab Notebook](https://colab.research.google.com/drive/1KJDBrx3akSPUW42Kbeepj64ZisHFD-NV?usp=sharing)")
-    st.markdown("🐙 [GitHub Repository](https://github.com/Zeraphim/Streamlit-Iris-Classification-Dashboard)")
-    st.markdown("by: [`Zeraphim`](https://jcdiamante.com)")
+    # Détails du projet
+    st.subheader("Résumé")
+    st.markdown("""
+        Un tableau de bord interactif pour explorer et classifier les données des fleurs Iris.
+        
+        - 📊 [Jeu de Données](https://www.kaggle.com/datasets/arshid/iris-flower-dataset)
+        - 📗 [Notebook Google Colab](https://colab.research.google.com/drive/1KJDBrx3akSPUW42Kbeepj64ZisHFD-NV?usp=sharing)
+        - 🐙 [Dépôt GitHub](https://github.com/Zeraphim/Streamlit-Iris-Classification-Dashboard)
+        
+        *Auteur :* [Zeraphim](https://jcdiamante.com)
+    """)
 
 # -------------------------
 
-# Load data
-df = pd.read_csv('iris.csv', delimiter=',')
+# Charger les données
+try:
+    df = pd.read_csv('iris.csv', delimiter=',')
+except FileNotFoundError:
+    st.error("Le fichier 'iris.csv' est introuvable. Veuillez vérifier son emplacement.")
+    st.stop()
 
-# Set page title
-st.title('ISJM BI - Exploration des données des Iris')
+# Page principale
+if st.session_state.page_selection == 'about':
+    # Page À Propos
+    st.title("🏷 À Propos")
+    st.markdown("""
+        Cette application explore le célèbre jeu de données *Iris* et propose :
+        
+        - Une exploration visuelle des données.
+        - Un prétraitement et nettoyage des données.
+        - La construction et l'évaluation de modèles d'apprentissage automatique.
+        - Une interface interactive pour prédire l'espèce d'une fleur Iris.
+        
+        *Technologies utilisées :*
+        - Python (Streamlit, Altair, Pandas)
+        - Machine Learning (Scikit-learn)
+        
+        *Auteur : Stéphane C. K. Tékouabou*
+        
+        ✉ Contact : ctekouaboukoumetio@gmail.com
+    """)
 
-st.header('Pré-analyse visuelles données des Iris TP1')  # On définit l'en-tête d'une section
+elif st.session_state.page_selection == 'dataset':
+    # Page Jeu de Données
+    st.title("📊 Jeu de Données")
+    
+    # Afficher les premières lignes du DataFrame
+    if st.checkbox("Afficher le DataFrame"):
+        nb_rows = st.slider("Nombre de lignes à afficher :", min_value=5, max_value=50, value=10)
+        st.write(df.head(nb_rows))
+    
+    # Afficher les statistiques descriptives
+    if st.checkbox("Afficher les statistiques descriptives"):
+        st.write(df.describe())
 
-# Afficher les premières lignes des données chargées
-st.subheader('Description des données')  # Sets a subheader for a subsection
-if st.checkbox("Boutons de prévisualisation du DataFrame"):
-    if st.button("Head"):
-        st.write(df.head(2))
-    if st.button("Tail"):
-        st.write(df.tail())
-    if st.button("Infos"):
-        st.write(df.info())
-    if st.button("Shape"):
-        st.write(df.shape)
-else:
-    st.write(df.head(2))
+elif st.session_state.page_selection == 'eda':
+    # Page Analyse Exploratoire
+    st.title("🔍 Analyse Exploratoire")
+    
+    # Graphique interactif : Longueur vs Largeur du pétale
+    chart1 = alt.Chart(df).mark_circle(size=60).encode(
+        x='petal_length',
+        y='petal_width',
+        color='species',
+        tooltip=['petal_length', 'petal_width', 'species']
+    ).interactive()
+    
+    # Graphique interactif : Longueur vs Largeur du sépale
+    chart2 = alt.Chart(df).mark_circle(size=60).encode(
+        x='sepal_length',
+        y='sepal_width',
+        color='species',
+        tooltip=['sepal_length', 'sepal_width', 'species']
+    ).interactive()
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.altair_chart(chart1, use_container_width=True)
+    
+    with col2:
+        st.altair_chart(chart2, use_container_width=True)
 
-# -------------------------
-# Préparation des données pour le modèle de prédiction
-
-# Séparation des caractéristiques (features) et de la cible (target)
-X = df.drop('species', axis=1)
-y = df['species']
-
-# Normalisation des données
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Split des données en jeu d'entraînement et jeu de test
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
-
-# Entraînement du modèle (Random Forest)
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
-
-# -------------------------
-# Filtres interactifs pour la prédiction
-
-st.header("Prédiction d'espèce d'Iris")
-
-# Utilisation de widgets Streamlit pour modifier les paramètres d'entrée
-sepal_length = st.slider('Longueur du sépale (cm)', 4.0, 8.0, 5.0, 0.1)
-sepal_width = st.slider('Largeur du sépale (cm)', 2.0, 5.0, 3.0, 0.1)
-petal_length = st.slider('Longueur du pétale (cm)', 1.0, 7.0, 4.0, 0.1)
-petal_width = st.slider('Largeur du pétale (cm)', 0.1, 3.0, 1.0, 0.1)
-
-# Prédiction en fonction des valeurs saisies
-input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
-input_scaled = scaler.transform(input_data)
-prediction = model.predict(input_scaled)[0]
-
-# Afficher la prédiction
-st.write(f"L'espèce prédite est : {prediction}")
-
-# Affichage de graphiques
-chart = alt.Chart(df).mark_point().encode(
-    x='petal_length',
-    y='petal_width',
-    color="species"
-)
-
-# Display chart
-st.write(chart)
-
-# Interactive chart
-chart2 = alt.Chart(df).mark_circle(size=60).encode(
-    x='sepal_length',
-    y='sepal_width',
-    color='species',
-    tooltip=['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
-).interactive()
-
-st.write(chart2)
+elif st.session_state.page_selection == 'prediction':
+    # Page Prédiction
+    from sklearn.neighbors import KNeighborsClassifier
+       
+    # Formulaire pour saisir les caractéristiques
+    sepal_length = st.number_input("Longueur du sépale (cm)", min_value=0.0)
+    sepal_width = st.number_input("Largeur du sépale (cm)", min_value=0.0)
+    petal_length = st.number_input("Longueur du pétale (cm)", min_value=0.0)
+    petal_width = st.number_input("Largeur du pétale (cm)", min_value=0.0)
+    
+    if st.button("Prédire"):
+        try:
+            knn_model = KNeighborsClassifier(n_neighbors=3)  # Exemple d'un modèle simple KNN
+            X = df.drop('species', axis=1)
+            y = df['species']
+            knn_model.fit(X, y)  # Entraîner sur tout le jeu de données
+            
+            prediction = knn_model.predict([[sepal_length, sepal_width, petal_length, petal_width]])
+            species_predicted = prediction[0]
+            st.success(f"L'espèce prédite est : *{species_predicted}*")
+        
+        except Exception as e:
+            st.error(f"Erreur lors de la prédiction : {e}")
