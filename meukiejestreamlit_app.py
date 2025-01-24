@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
 
 # Page configuration
 st.set_page_config(
