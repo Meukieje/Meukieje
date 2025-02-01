@@ -24,7 +24,3 @@ for col in model_columns:
 # Prédiction
 prediction = model.predict(user_data)
 st.write("Résultat : *Oui" if prediction[0] == 1 else "Résultat : **Non*")
-import pickle
-
-pickle.dump(model, open("model.pkl", "wb"))
-pickle.dump(X.columns.tolist(), open("model_columns.pkl", "wb"))
