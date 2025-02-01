@@ -4,7 +4,6 @@ import pickle
 # Charger le modèle
 with open("model.pkl", "rb") as file:
     model = pickle.load(file)
-model = pickle.load(open("model.pkl", "rb"))
 st.title("Prédiction de souscription à un dépôt à terme")
 # Champs d'entrée utilisateur
 age = st.number_input("Âge", min_value=18, max_value=100, value=30)
