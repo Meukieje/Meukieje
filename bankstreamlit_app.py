@@ -1,6 +1,15 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from sklearn.linear_model import LogisticRegression
+
+# Créer et entraîner un modèle
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Sauvegarder le modèle dans un fichier .pkl
+with open("model.pkl", "wb") as file:
+    pickle.dump(model, file)
 # Charger le modèle
 model = pickle.load(open("model.pkl", "rb"))
 st.title("Prédiction de souscription à un dépôt à terme")
