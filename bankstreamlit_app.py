@@ -1,3 +1,8 @@
+streamlit
+scikit-learn
+pandas
+matplotlib
+seaborn
 import streamlit as st
 import pandas as pd
 import pickle
