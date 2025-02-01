@@ -28,4 +28,3 @@ import pickle
 
 pickle.dump(model, open("model.pkl", "wb"))
 pickle.dump(X.columns.tolist(), open("model_columns.pkl", "wb"))
-streamlit run app.py
