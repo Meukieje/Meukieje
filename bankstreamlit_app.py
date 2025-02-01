@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 # Charger le modèle
-model = pickle.load(open("model.pkl", "rb"))
+model = pickle.load(open("path/to/your/model.pkl", "rb"))
 st.title("Prédiction de souscription à un dépôt à terme")
 # Champs d'entrée utilisateur
 age = st.number_input("Âge", min_value=18, max_value=100, value=30)
